@@ -13,6 +13,11 @@ def main():
     # initialize pygame
     pygame.init()
 
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
+
     # create a window
     screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
 
@@ -20,6 +25,7 @@ def main():
     dt = 0
 
     player = Player(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2, constants.PLAYER_RADIUS)
+    
 
     # run the game loop
     while True:
@@ -27,8 +33,15 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
-        player.draw(screen)
+        
+        for thing in updatable:
+            thing.update(dt)
 
+        screen.fill((0, 0, 0))
+
+        for thing in drawable:
+            thing.draw(screen)
+        
         # update the screen
         pygame.display.flip()
         
